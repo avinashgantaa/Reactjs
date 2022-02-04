@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import {Component} from 'react';
+import axios from 'axios';
+class App extends Component{
+  constructor(props){
+    super(props)
+    this.state={
+      users:[],
+      loading:false
+    }
+  }
+  componentWillMount(){
+    this.setState({
+      loading:true
+    })
+    axios("https://api.randomuser.me/?nat=us&results=5").then(response=>this.setState({users:response.data.results,loading:false}))
+  }
+  render(){
+    return(
+      <div className='App'>{!this.state.loading?this.state.users.map(user=><div>
+        <h3>{user.name.first}</h3>
+        <p>{user.email}</p>
+        <hr/>
+        </div>):"Loading..."}
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    )
+  }
+  
 }
-
 export default App;
